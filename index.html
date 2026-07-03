@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Highbury Primary School — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#242b63;
+  --navy-dark:#181d47;
+  --navy-70:#616799;
+  --navy-10:#e9eaf2;
+  --gold:#f5ac1c;
+  --gold-pale:#fef6e3;
+  --white:#ffffff;
+  --grey-50:#f7f7fa;
+  --grey-100:#eeeef2;
+  --grey-300:#d7d8e0;
+  --grey-500:#8a8ea3;
+  --grey-800:#33364a;
+  --danger:#c0392b;
+  --danger-bg:#fdeceb;
+  --success:#1a7a42;
+  --success-bg:#e8f5ee;
+  --radius:16px;
+  --shadow:0 4px 18px rgba(24,29,71,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Montserrat',sans-serif;
+  background:var(--navy);
+  color:var(--grey-800);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:24px 16px 40px;
+}
+
+/* ===== Shell ===== */
+.app{
+  width:100%;
+  max-width:1040px;
+}
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:6px 4px 22px;
+}
+.pill-btn{
+  background:var(--white);
+  border:none;
+  color:var(--navy);
+  font-family:'Montserrat',sans-serif;
+  font-weight:700;
+  font-size:0.95rem;
+  padding:12px 22px;
+  border-radius:999px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.pill-btn:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,0.18); }
+.pill-btn:active{ transform:translateY(0); }
+.pill-btn.ghost{ visibility:hidden; }
+.brand-title{
+  color:var(--white);
+  font-weight:800;
+  font-size:2.1rem;
+  letter-spacing:0.5px;
+  text-align:center;
+}
+.brand-title .accent{ color:var(--gold); }
+
+.card{
+  background:var(--white);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  padding:44px 40px 48px;
+  min-height:520px;
+}
+.date-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  color:var(--navy);
+  font-weight:700;
+  font-size:1.05rem;
+  margin-bottom:8px;
+}
+.date-row svg{ flex-shrink:0; }
+
+/* ===== Home / choice circles ===== */
+.choice-grid{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:44px;
+  flex-wrap:wrap;
+  min-height:380px;
+}
+.choice-circle{
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  border:2px solid var(--grey-300);
+  background:var(--white);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-weight:700;
+  font-size:1.3rem;
+  color:var(--navy);
+  cursor:pointer;
+  line-height:1.3;
+  transition:all .15s ease;
+}
+.choice-circle .sub{
+  display:block;
+  font-weight:500;
+  font-size:0.85rem;
+  color:var(--grey-500);
+  margin-top:4px;
+}
+.choice-circle:hover{
+  border-color:var(--gold);
+  box-shadow:0 8px 22px rgba(245,172,28,0.28);
+  transform:translateY(-3px);
+}
+.choice-circle.out-circle{ color:var(--danger); }
+.choice-circle.out-circle:hover{ border-color:var(--danger); box-shadow:0 8px 22px rgba(192,57,43,0.22); }
+.choice-circle.admin-circle{ color:var(--navy-70); }
+
+.section-heading{
+  color:var(--navy);
+  font-weight:800;
+  font-size:1.7rem;
+  margin:8px 0 30px;
+}
+
+/* ===== Forms ===== */
+.two-col{
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:48px;
+}
+@media(max-width:760px){ .two-col{ grid-template-columns:1fr; } }
+
+label{
+  display:block;
+  font-weight:700;
+  font-size:0.88rem;
+  color:var(--grey-800);
+  margin:18px 0 6px;
+}
+label:first-of-type{ margin-top:0; }
+input[type=text], input[type=tel], select, textarea{
+  width:100%;
+  padding:13px 14px;
+  border:1.5px solid var(--grey-300);
+  border-radius:10px;
+  font-family:'Montserrat',sans-serif;
+  font-size:0.95rem;
+  color:var(--grey-800);
+  background:var(--white);
+  outline:none;
+  transition:border-color .12s ease;
+}
+input:focus, select:focus, textarea:focus{ border-color:var(--navy); }
+textarea{ resize:vertical; min-height:70px; }
+
+.btn{
+  font-family:'Montserrat',sans-serif;
+  font-weight:700;
+  font-size:0.95rem;
+  border:none;
+  border-radius:10px;
+  padding:14px 26px;
+  cursor:pointer;
+  transition:transform .12s ease, opacity .12s ease;
+}
+.btn:hover{ transform:translateY(-1px); }
+.btn-primary{ background:var(--navy); color:var(--white); }
+.btn-danger{ background:var(--danger); color:var(--white); }
+.btn-gold{ background:var(--gold); color:var(--navy-dark); }
+.btn-outline{ background:var(--white); border:1.5px solid var(--navy); color:var(--navy); }
+.btn:disabled{ opacity:0.45; cursor:not-allowed; transform:none; }
+
+.quick-box{
+  background:var(--grey-50);
+  border-radius:16px;
+  padding:26px 24px;
+}
+.quick-box h3{ color:var(--grey-500); font-weight:700; font-size:1.05rem; margin-bottom:16px; }
+
+/* Searchable select */
+.combo{ position:relative; }
+.combo-input{ cursor:pointer; background:var(--grey-100); }
+.combo-list{
+  position:absolute;
+  top:calc(100% + 4px);
+  left:0; right:0;
+  background:var(--white);
+  border:1px solid var(--grey-300);
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  max-height:230px;
+  overflow-y:auto;
+  z-index:20;
+  display:none;
+}
+.combo-list.open{ display:block; }
+.combo-search{
+  width:100%;
+  border:none;
+  border-bottom:1px solid var(--grey-300);
+  padding:12px 14px;
+  font-family:'Montserrat',sans-serif;
+  outline:none;
+  border-radius:10px 10px 0 0;
+}
+.combo-item{
+  padding:11px 14px;
+  cursor:pointer;
+  font-size:0.93rem;
+}
+.combo-item:hover{ background:var(--gold-pale); }
+.combo-item.selected{ background:var(--navy); color:var(--white); }
+.combo-item.placeholder{ color:var(--grey-500); background:var(--grey-100); }
+
+.actions-row{ display:flex; justify-content:flex-end; gap:12px; margin-top:30px; }
+
+/* ===== Toast / confirmation ===== */
+.confirm-wrap{
+  min-height:420px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:14px;
+}
+.confirm-icon{
+  width:84px; height:84px; border-radius:50%;
+  background:var(--success-bg); color:var(--success);
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.4rem; font-weight:800;
+}
+.confirm-icon.out{ background:var(--danger-bg); color:var(--danger); }
+.confirm-title{ font-size:1.5rem; font-weight:800; color:var(--navy); }
+.confirm-sub{ color:var(--grey-500); font-size:1rem; max-width:420px; }
+
+/* ===== Lists (sign-out / admin) ===== */
+.list-search{ margin-bottom:18px; }
+.person-list{ display:flex; flex-direction:column; gap:10px; max-height:420px; overflow-y:auto; }
+.person-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 18px;
+  border:1.5px solid var(--grey-300);
+  border-radius:12px;
+  cursor:pointer;
+  transition:border-color .12s ease, background .12s ease;
+}
+.person-row:hover{ border-color:var(--gold); background:var(--gold-pale); }
+.person-name{ font-weight:700; color:var(--navy); }
+.person-meta{ font-size:0.82rem; color:var(--grey-500); margin-top:2px; }
+.badge{
+  font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:999px;
+  background:var(--success-bg); color:var(--success);
+}
+.empty-state{ text-align:center; color:var(--grey-500); padding:60px 20px; font-size:0.95rem; }
+
+/* ===== Admin ===== */
+.admin-login{
+  max-width:340px; margin:60px auto; text-align:center;
+}
+.admin-login input{ text-align:center; letter-spacing:4px; font-size:1.2rem; }
+.tabs{ display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+.tab{
+  padding:10px 18px; border-radius:999px; border:1.5px solid var(--grey-300);
+  font-weight:700; font-size:0.85rem; color:var(--grey-500); cursor:pointer; background:var(--white);
+}
+.tab.active{ background:var(--navy); border-color:var(--navy); color:var(--white); }
+table{ width:100%; border-collapse:collapse; font-size:0.88rem; }
+th{ text-align:left; padding:10px 12px; color:var(--grey-500); font-size:0.78rem; text-transform:uppercase; letter-spacing:0.4px; border-bottom:2px solid var(--grey-100); }
+td{ padding:12px; border-bottom:1px solid var(--grey-100); color:var(--grey-800); }
+tr:last-child td{ border-bottom:none; }
+.tag{ font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:999px; }
+.tag.in{ background:var(--success-bg); color:var(--success); }
+.tag.out{ background:var(--danger-bg); color:var(--danger); }
+.tag.visitor{ background:var(--gold-pale); color:#8a5c00; }
+.tag.staff{ background:var(--navy-10); color:var(--navy); }
+.admin-toolbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px; }
+.admin-stats{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:24px; }
+.stat-card{ background:var(--grey-50); border-radius:14px; padding:16px 22px; min-width:130px; }
+.stat-card .num{ font-size:1.6rem; font-weight:800; color:var(--navy); }
+.stat-card .lbl{ font-size:0.78rem; color:var(--grey-500); font-weight:600; }
+
+.footer-mark{
+  color:var(--navy-70);
+  font-weight:700;
+  font-size:0.85rem;
+  margin-top:26px;
+  text-align:center;
+}
+.footer-mark span{ color:var(--gold); }
+
+.hidden{ display:none !important; }
+.demo-flag{
+  background:var(--gold-pale); color:#8a5c00; font-size:0.75rem; font-weight:700;
+  padding:6px 12px; border-radius:8px; display:inline-block; margin-bottom:18px;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <button class="pill-btn" id="backBtn" onclick="goBack()">&larr; Back</button>
+    <div class="brand-title">Highbury<span class="accent">.</span></div>
+    <button class="pill-btn" onclick="goHome()">&#8962; Home</button>
+  </div>
+
+  <div class="card">
+    <div class="date-row" id="dateRow"></div>
+
+    <!-- ===================== HOME ===================== -->
+    <section id="view-home">
+      <div class="choice-grid">
+        <div class="choice-circle" onclick="nav('visitorHub')">Visitor<br>mode</div>
+        <div class="choice-circle" onclick="nav('staffHub')">Staff<br>mode</div>
+        <div class="choice-circle admin-circle" onclick="nav('adminLogin')">Admin</div>
+      </div>
+    </section>
+
+    <!-- ===================== VISITOR HUB (IN/OUT) ===================== -->
+    <section id="view-visitorHub" class="hidden">
+      <div class="section-heading" style="text-align:center;">Visitors</div>
+      <div class="choice-grid">
+        <div class="choice-circle" onclick="nav('visitorIn')">IN<span class="sub">Sign In</span></div>
+        <div class="choice-circle out-circle" onclick="nav('visitorOut')">OUT<span class="sub">Sign Out</span></div>
+      </div>
+    </section>
+
+    <!-- ===================== VISITOR SIGN IN ===================== -->
+    <section id="view-visitorIn" class="hidden">
+      <div class="two-col">
+        <div>
+          <div class="section-heading">Visitor</div>
+          <label>Visitor Type</label>
+          <select id="vType">
+            <option>Parent / Guardian</option>
+            <option>Contractor</option>
+            <option>Volunteer</option>
+            <option>Relief Teacher</option>
+            <option>DfE / Department Visitor</option>
+            <option>Other Visitor</option>
+          </select>
+          <label>First Name</label>
+          <input type="text" id="vFirst" placeholder="First Name">
+          <label>Last Name</label>
+          <input type="text" id="vLast" placeholder="Last Name">
+          <label>Mobile</label>
+          <input type="tel" id="vMobile" placeholder="Mobile">
+          <label>Organisation</label>
+          <input type="text" id="vOrg" placeholder="Organisation (optional)">
+          <label>Reason for visit</label>
+          <textarea id="vReason" placeholder="Please enter"></textarea>
+          <div class="actions-row">
+            <button class="btn btn-primary" onclick="submitVisitorSignIn()">Sign In</button>
+          </div>
+        </div>
+        <div>
+          <div class="section-heading" style="font-size:1.3rem;">Have you visited us before?</div>
+          <div class="quick-box">
+            <h3>Quick Sign In</h3>
+            <label>Mobile number</label>
+            <input type="tel" id="qMobile" placeholder="Mobile number">
+            <div class="actions-row" style="justify-content:flex-start;margin-top:16px;">
+              <button class="btn btn-gold" onclick="quickSignIn()">Quick Sign In</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VISITOR SIGN OUT ===================== -->
+    <section id="view-visitorOut" class="hidden">
+      <div class="section-heading">Sign Out — Visitors currently on site</div>
+      <div class="person-list" id="visitorOutList"></div>
+    </section>
+
+    <!-- ===================== STAFF HUB ===================== -->
+    <section id="view-staffHub" class="hidden">
+      <div class="section-heading">School Staff</div>
+      <label>Teacher</label>
+      <div class="combo" id="staffCombo">
+        <input type="text" class="combo-input" id="staffComboDisplay" placeholder="Please select" readonly onclick="toggleCombo()">
+        <div class="combo-list" id="staffComboList">
+          <input type="text" class="combo-search" id="staffSearch" placeholder="Search staff..." oninput="filterStaff()">
+          <div id="staffOptions"></div>
+        </div>
+      </div>
+      <div class="actions-row" style="justify-content:center;margin-top:36px;">
+        <button class="btn btn-primary" style="min-width:150px;" onclick="staffAction('in')">Sign In</button>
+        <button class="btn btn-danger" style="min-width:150px;" onclick="staffAction('out')">Sign Out</button>
+      </div>
+    </section>
+
+    <!-- ===================== CONFIRMATION ===================== -->
+    <section id="view-confirm" class="hidden">
+      <div class="confirm-wrap">
+        <div class="confirm-icon" id="confirmIcon">&#10003;</div>
+        <div class="confirm-title" id="confirmTitle">Signed in</div>
+        <div class="confirm-sub" id="confirmSub"></div>
+        <button class="btn btn-outline" style="margin-top:18px;" onclick="goHome()">Done</button>
+      </div>
+    </section>
+
+    <!-- ===================== ADMIN LOGIN ===================== -->
+    <section id="view-adminLogin" class="hidden">
+      <div class="admin-login">
+        <div class="section-heading" style="text-align:center;">Admin</div>
+        <div class="demo-flag">Demo only — not secure. Passcode: 0000</div>
+        <label>Passcode</label>
+        <input type="text" id="adminPass" placeholder="••••" maxlength="8">
+        <div class="actions-row" style="justify-content:center;margin-top:20px;">
+          <button class="btn btn-primary" onclick="adminLogin()">Enter</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ADMIN DASHBOARD ===================== -->
+    <section id="view-admin" class="hidden">
+      <div class="admin-toolbar">
+        <div class="section-heading" style="margin:0;">Today's Sign In / Out</div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-outline" onclick="exportCsv()">Export CSV</button>
+          <button class="btn btn-outline" onclick="clearDemoData()">Clear demo data</button>
+        </div>
+      </div>
+      <div class="admin-stats" id="adminStats"></div>
+      <div class="tabs">
+        <div class="tab active" data-tab="all" onclick="setAdminTab('all')">All</div>
+        <div class="tab" data-tab="onsite" onclick="setAdminTab('onsite')">Currently on site</div>
+        <div class="tab" data-tab="visitor" onclick="setAdminTab('visitor')">Visitors</div>
+        <div class="tab" data-tab="staff" onclick="setAdminTab('staff')">Staff</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Type</th><th>Details</th><th>Time In</th><th>Time Out</th><th>Status</th></tr>
+          </thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="footer-mark">Highbury Primary School — Visitor &amp; Staff Sign In <span>(demo)</span></div>
+</div>
+
+<script>
+/* =========================================================
+   Highbury Sign In / Out — static demo (localStorage only)
+   No backend / no Firebase. Data lives in the browser only,
+   per-device, and resets when "Clear demo data" is pressed.
+   ========================================================= */
+
+const STORAGE_KEY = 'highbury_signin_demo_v1';
+const ADMIN_PASSCODE = '0000';
+
+const SAMPLE_STAFF = [
+  "Attenborough, Zoe","Augustine, Josh","Baliey, Tayla","Bornman, Shelley","Botten, Daniel",
+  "Carter, Mia","Davison, Rhys","Ellery, Priya","Fenwick, Sam","Gregson, Holly",
+  "Hartnell, Ben","Ibrahim, Layla","Jarrett, Nouman","Kingsley, Sarah","Lomax, Belinda",
+  "McAllister, Mara","Ng, Wei","O'Connell, Grace","Patel, Ravi","Quinlan, Ella",
+  "Rossiter, Jack","Sant, Ana","Turnbull, Beau","Underwood, Kate","Vella, Nick",
+  "Whitfield, Poppy","Yeo, Marcus","Zerafa, Isla"
+];
+
+let state = loadState();
+let currentView = 'home';
+let staffSelected = null;
+let adminTabState = 'all';
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { records: [] }; // {id, name, type:'visitor'|'staff', meta, timeIn, timeOut, status:'in'|'out'}
+}
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+function fmtDate(){
+  const d = new Date();
+  return d.toLocaleDateString('en-AU', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+}
+function fmtTime(){
+  return new Date().toLocaleTimeString('en-AU', { hour:'2-digit', minute:'2-digit' });
+}
+document.getElementById('dateRow').innerHTML =
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242b63" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="16" y1="3" x2="16" y2="7"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
+  '<span>' + fmtDate() + '</span>';
+
+/* ---------- Navigation ---------- */
+const viewHistory = ['home'];
+function nav(view){
+  viewHistory.push(view);
+  render(view);
+}
+function goHome(){
+  viewHistory.length = 0;
+  viewHistory.push('home');
+  render('home');
+}
+function goBack(){
+  if(viewHistory.length > 1){ viewHistory.pop(); }
+  render(viewHistory[viewHistory.length-1]);
+}
+function render(view){
+  currentView = view;
+  document.querySelectorAll('section[id^="view-"]').forEach(s => s.classList.add('hidden'));
+  document.getElementById('view-' + view).classList.remove('hidden');
+  document.getElementById('backBtn').classList.toggle('ghost', view === 'home');
+
+  if(view === 'visitorOut') renderVisitorOutList();
+  if(view === 'staffHub') { buildStaffOptions(); staffSelected = null; document.getElementById('staffComboDisplay').value=''; }
+  if(view === 'admin') renderAdmin();
+}
+
+/* ---------- Visitor sign in ---------- */
+function submitVisitorSignIn(){
+  const first = document.getElementById('vFirst').value.trim();
+  const last = document.getElementById('vLast').value.trim();
+  const mobile = document.getElementById('vMobile').value.trim();
+  const type = document.getElementById('vType').value;
+  const org = document.getElementById('vOrg').value.trim();
+  const reason = document.getElementById('vReason').value.trim();
+
+  if(!first || !last || !mobile){
+    alert('Please fill in First Name, Last Name and Mobile.');
+    return;
+  }
+  const record = {
+    id: 'v_' + Date.now(),
+    name: first + ' ' + last,
+    type: 'visitor',
+    meta: [type, org, reason].filter(Boolean).join(' · '),
+    mobile: mobile,
+    timeIn: fmtTime(),
+    timeOut: null,
+    status: 'in',
+    date: fmtDate()
+  };
+  state.records.push(record);
+  saveState();
+  ['vFirst','vLast','vMobile','vOrg','vReason'].forEach(id => document.getElementById(id).value = '');
+  showConfirm('in', 'Welcome, ' + first + '!', 'You\'re signed in. Please wear a visitor badge while on site.');
+}
+
+function quickSignIn(){
+  const mobile = document.getElementById('qMobile').value.trim();
+  if(!mobile){ alert('Enter a mobile number.'); return; }
+  const prior = [...state.records].reverse().find(r => r.type === 'visitor' && r.mobile === mobile);
+  if(!prior){
+    alert('No previous visit found for that number in this demo. Please use the full form.');
+    return;
+  }
+  const record = {
+    id: 'v_' + Date.now(),
+    name: prior.name,
+    type: 'visitor',
+    meta: prior.meta,
+    mobile: mobile,
+    timeIn: fmtTime(),
+    timeOut: null,
+    status: 'in',
+    date: fmtDate()
+  };
+  state.records.push(record);
+  saveState();
+  document.getElementById('qMobile').value = '';
+  showConfirm('in', 'Welcome back, ' + prior.name.split(' ')[0] + '!', 'You\'re signed in.');
+}
+
+function renderVisitorOutList(){
+  const list = document.getElementById('visitorOutList');
+  const onsite = state.records.filter(r => r.type === 'visitor' && r.status === 'in');
+  if(onsite.length === 0){
+    list.innerHTML = '<div class="empty-state">No visitors currently signed in.</div>';
+    return;
+  }
+  list.innerHTML = onsite.map(r => `
+    <div class="person-row" onclick="signOutRecord('${r.id}')">
+      <div>
+        <div class="person-name">${r.name}</div>
+        <div class="person-meta">${r.meta || 'Visitor'} · Signed in ${r.timeIn}</div>
+      </div>
+      <span class="badge">On site</span>
+    </div>
+  `).join('');
+}
+
+function signOutRecord(id){
+  const rec = state.records.find(r => r.id === id);
+  if(!rec) return;
+  rec.status = 'out';
+  rec.timeOut = fmtTime();
+  saveState();
+  showConfirm('out', 'See you next time, ' + rec.name.split(' ')[0] + '!', 'You\'re signed out. Thanks for visiting Highbury.');
+}
+
+/* ---------- Staff ---------- */
+function buildStaffOptions(list){
+  const opts = document.getElementById('staffOptions');
+  const source = list || SAMPLE_STAFF;
+  let html = '<div class="combo-item placeholder" onclick="selectStaff(\'\')">Please select</div>';
+  html += source.map(name => `<div class="combo-item" onclick="selectStaff('${name.replace(/'/g,"\\'")}')">${name}</div>`).join('');
+  opts.innerHTML = html;
+}
+function filterStaff(){
+  const q = document.getElementById('staffSearch').value.toLowerCase();
+  buildStaffOptions(SAMPLE_STAFF.filter(n => n.toLowerCase().includes(q)));
+}
+function toggleCombo(){
+  document.getElementById('staffComboList').classList.toggle('open');
+}
+function selectStaff(name){
+  staffSelected = name || null;
+  document.getElementById('staffComboDisplay').value = name;
+  document.getElementById('staffComboList').classList.remove('open');
+}
+document.addEventListener('click', (e) => {
+  const combo = document.getElementById('staffCombo');
+  if(combo && !combo.contains(e.target)) document.getElementById('staffComboList').classList.remove('open');
+});
+
+function staffAction(mode){
+  if(!staffSelected){ alert('Please select your name first.'); return; }
+  if(mode === 'in'){
+    const already = state.records.find(r => r.type==='staff' && r.name===staffSelected && r.status==='in');
+    if(already){ alert(staffSelected + ' is already signed in.'); return; }
+    state.records.push({
+      id: 's_' + Date.now(),
+      name: staffSelected,
+      type: 'staff',
+      meta: 'Staff',
+      timeIn: fmtTime(),
+      timeOut: null,
+      status: 'in',
+      date: fmtDate()
+    });
+    saveState();
+    showConfirm('in', staffSelected.split(', ').reverse().join(' ') + ', you\'re signed in', '');
+  } else {
+    const rec = [...state.records].reverse().find(r => r.type==='staff' && r.name===staffSelected && r.status==='in');
+    if(!rec){ alert(staffSelected + ' is not currently signed in.'); return; }
+    rec.status = 'out';
+    rec.timeOut = fmtTime();
+    saveState();
+    showConfirm('out', staffSelected.split(', ').reverse().join(' ') + ', you\'re signed out', '');
+  }
+}
+
+/* ---------- Confirmation screen ---------- */
+function showConfirm(kind, title, sub){
+  document.getElementById('confirmIcon').className = 'confirm-icon' + (kind==='out' ? ' out' : '');
+  document.getElementById('confirmIcon').innerHTML = kind==='out' ? '&#10005;' : '&#10003;';
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmSub').textContent = sub;
+  render('confirm');
+  setTimeout(() => { if(currentView === 'confirm') goHome(); }, 4000);
+}
+
+/* ---------- Admin ---------- */
+function adminLogin(){
+  const val = document.getElementById('adminPass').value;
+  if(val === ADMIN_PASSCODE){
+    document.getElementById('adminPass').value = '';
+    nav('admin');
+  } else {
+    alert('Incorrect passcode. (Demo passcode is 0000)');
+  }
+}
+function setAdminTab(tab){
+  adminTabState = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  renderAdmin();
+}
+function renderAdmin(){
+  const all = state.records;
+  const onsiteCount = all.filter(r => r.status === 'in').length;
+  const visitorCount = all.filter(r => r.type === 'visitor').length;
+  const staffCount = all.filter(r => r.type === 'staff').length;
+
+  document.getElementById('adminStats').innerHTML = `
+    <div class="stat-card"><div class="num">${onsiteCount}</div><div class="lbl">Currently on site</div></div>
+    <div class="stat-card"><div class="num">${visitorCount}</div><div class="lbl">Visitor entries (demo)</div></div>
+    <div class="stat-card"><div class="num">${staffCount}</div><div class="lbl">Staff entries (demo)</div></div>
+  `;
+
+  let rows = all;
+  if(adminTabState === 'onsite') rows = all.filter(r => r.status === 'in');
+  if(adminTabState === 'visitor') rows = all.filter(r => r.type === 'visitor');
+  if(adminTabState === 'staff') rows = all.filter(r => r.type === 'staff');
+  rows = [...rows].reverse();
+
+  const body = document.getElementById('adminTableBody');
+  if(rows.length === 0){
+    body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#8a8ea3;padding:30px;">No records yet — sign someone in to see it here.</td></tr>';
+    return;
+  }
+  body.innerHTML = rows.map(r => `
+    <tr>
+      <td><strong>${r.name}</strong></td>
+      <td><span class="tag ${r.type}">${r.type === 'visitor' ? 'Visitor' : 'Staff'}</span></td>
+      <td>${r.meta || '—'}</td>
+      <td>${r.timeIn}</td>
+      <td>${r.timeOut || '—'}</td>
+      <td><span class="tag ${r.status === 'in' ? 'in' : 'out'}">${r.status === 'in' ? 'On site' : 'Signed out'}</span></td>
+    </tr>
+  `).join('');
+}
+function exportCsv(){
+  const rows = [['Name','Type','Details','Date','Time In','Time Out','Status']];
+  state.records.forEach(r => rows.push([r.name, r.type, r.meta||'', r.date, r.timeIn, r.timeOut||'', r.status]));
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'highbury-signin-demo-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function clearDemoData(){
+  if(confirm('Clear all demo sign-in data on this device? This cannot be undone.')){
+    state = { records: [] };
+    saveState();
+    renderAdmin();
+  }
+}
+
+/* init */
+render('home');
+</script>
+</body>
+</html>
